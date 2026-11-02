@@ -1,0 +1,286 @@
+:root {
+    color-scheme: light;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1f2937;
+    background: #f4f6f8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.page {
+    width: min(100% - 32px, 1000px);
+    margin: 56px auto;
+}
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    color: #2563eb;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+    margin-top: 0;
+}
+
+h1 {
+    margin-bottom: 8px;
+    font-size: clamp(2rem, 5vw, 2.7rem);
+}
+
+.subtitle,
+.result-count {
+    color: #64748b;
+}
+
+.main-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.main-nav a {
+    padding: 9px 13px;
+    border-radius: 7px;
+    color: #475569;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: #1d4ed8;
+    background: #dbeafe;
+}
+
+.panel {
+    margin-bottom: 22px;
+    padding: 22px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 4px 16px rgb(15 23 42 / 4%);
+}
+
+.panel > h2 {
+    margin-bottom: 16px;
+    font-size: 1.15rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    align-items: end;
+}
+
+.form-grid label {
+    display: grid;
+    gap: 7px;
+    color: #475569;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.form-grid input,
+.form-grid select {
+    width: 100%;
+    min-width: 0;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    color: #1f2937;
+    background: white;
+    font: inherit;
+}
+
+.form-grid button,
+.secondary-button {
+    width: fit-content;
+    padding: 11px 16px;
+    border: 0;
+    border-radius: 8px;
+    color: white;
+    background: #2563eb;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.form-grid button:hover,
+.secondary-button:hover {
+    background: #1d4ed8;
+}
+
+.secondary-button {
+    padding: 8px 12px;
+    white-space: nowrap;
+}
+
+.status {
+    margin: 0 0 18px;
+    padding: 12px 15px;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    color: #166534;
+    background: #f0fdf4;
+}
+
+.status.error {
+    border-color: #fecaca;
+    color: #b91c1c;
+    background: #fff7f7;
+}
+
+.hint {
+    margin: 0;
+    color: #64748b;
+}
+
+.search-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.search-form button {
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 8px;
+    color: white;
+    background: #2563eb;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background: #1d4ed8;
+}
+
+.clear-link {
+    color: #2563eb;
+}
+
+.table-wrap,
+.notice {
+    overflow-x: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 4px 16px rgb(15 23 42 / 4%);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 15px 18px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+th {
+    color: #475569;
+    background: #f8fafc;
+    font-size: 0.85rem;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.book-title {
+    font-weight: 600;
+}
+
+.result-count {
+    margin: 12px 2px 0;
+    font-size: 0.9rem;
+}
+
+.notice {
+    padding: 22px;
+}
+
+.notice h2 {
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.notice p {
+    margin-bottom: 0;
+    color: #64748b;
+}
+
+.notice.error {
+    border-color: #fecaca;
+    background: #fff7f7;
+}
+
+.notice.error h2 {
+    color: #b91c1c;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
+@media (max-width: 600px) {
+    .page {
+        margin-top: 32px;
+    }
+
+    .search-form {
+        flex-wrap: wrap;
+    }
+
+    .search-form input {
+        flex-basis: 100%;
+    }
+
+    th,
+    td {
+        padding: 12px;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+}

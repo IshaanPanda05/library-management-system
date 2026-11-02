@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library - Members</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page">
+        <header class="page-header">
+            <p class="eyebrow">Library Management System</p>
+            <h1>Members</h1>
+            <p class="subtitle">Register members and keep their contact details.</p>
+        </header>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="{{ url_for('books') }}">Books</a>
+            <a class="active" href="{{ url_for('members') }}">Members</a>
+            <a href="{{ url_for('loans') }}">Borrow / Return</a>
+        </nav>
+
+        {% if status %}
+            <p class="status {{ status[0] }}" role="status">{{ status[1] }}</p>
+        {% endif %}
+
+        <section class="panel">
+            <h2>Register a member</h2>
+            <form class="form-grid" method="post" action="{{ url_for('add_member') }}">
+                <label>Full name <input name="full_name" maxlength="150" required></label>
+                <label>Email <input name="email" type="email" maxlength="254" required></label>
+                <label>Phone (optional) <input name="phone" maxlength="30"></label>
+                <button type="submit">Register member</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Registered members</h2>
+            {% if database_error %}
+                <section class="notice error" role="alert">
+                    <h2>Could not load members</h2>
+                    <p>Check that MySQL is running and the members table exists in <code>alone</code>.</p>
+                </section>
+            {% elif members %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Phone</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for member in members %}
+                                <tr>
+                                    <td class="book-title">{{ member.full_name }}</td>
+                                    <td>{{ member.email }}</td>
+                                    <td>{{ member.phone or "N/A" }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="result-count">{{ members|length }} member{% if members|length != 1 %}s{% endif %}</p>
+            {% else %}
+                <section class="notice"><h2>No members yet</h2><p>Register a member using the form above.</p></section>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library - Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page">
+        <header class="page-header">
+            <p class="eyebrow">Library Management System</p>
+            <h1>Books</h1>
+            <p class="subtitle">Browse the collection, add books, and check copy availability.</p>
+        </header>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a class="active" href="{{ url_for('books') }}">Books</a>
+            <a href="{{ url_for('members') }}">Members</a>
+            <a href="{{ url_for('loans') }}">Borrow / Return</a>
+        </nav>
+
+        {% if status %}
+            <p class="status {{ status[0] }}" role="status">{{ status[1] }}</p>
+        {% endif %}
+
+        <section class="panel">
+            <h2>Add a book</h2>
+            <form class="form-grid" method="post" action="{{ url_for('add_book') }}">
+                <label>Title <input name="title" maxlength="200" required></label>
+                <label>Author <input name="author" maxlength="150" required></label>
+                <label>ISBN (optional) <input name="isbn" maxlength="20"></label>
+                <label>Total copies <input name="total_copies" type="number" min="1" value="1" required></label>
+                <button type="submit">Add book</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Book collection</h2>
+            <form class="search-form" method="get" action="{{ url_for('books') }}">
+                <label class="visually-hidden" for="search">Search books</label>
+                <input id="search" name="search" type="search"
+                       placeholder="Search by title, author, or ISBN" value="{{ search }}">
+                <button type="submit">Search</button>
+                {% if search %}
+                    <a class="clear-link" href="{{ url_for('books') }}">Clear</a>
+                {% endif %}
+            </form>
+
+            {% if database_error %}
+                <section class="notice error" role="alert">
+                    <h2>Could not load books</h2>
+                    <p>Check that MySQL is running, the database is configured, and the tables exist in <code>alone</code>.</p>
+                </section>
+            {% elif books %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Title</th>
+                                <th scope="col">Author</th>
+                                <th scope="col">ISBN</th>
+                                <th scope="col">Copies available</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in books %}
+                                <tr>
+                                    <td class="book-title">{{ book.title }}</td>
+                                    <td>{{ book.author }}</td>
+                                    <td>{{ book.isbn or "N/A" }}</td>
+                                    <td>{{ book.available_copies }} / {{ book.total_copies }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="result-count">{{ books|length }} book{% if books|length != 1 %}s{% endif %} found</p>
+            {% else %}
+                <section class="notice">
+                    <h2>No books found</h2>
+                    <p>{% if search %}Try a different search term.{% else %}Add your first book using the form above.{% endif %}</p>
+                </section>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

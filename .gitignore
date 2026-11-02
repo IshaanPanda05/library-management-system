@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[cod]
+.env
+*.pyc
+.DS_Store
+.idea/
+.vscode/
+*.docx
+*.pdf
+*.pptx
+~$*

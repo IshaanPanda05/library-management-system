@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library - Borrow and Return</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="page">
+        <header class="page-header">
+            <p class="eyebrow">Library Management System</p>
+            <h1>Borrow / Return</h1>
+            <p class="subtitle">Record new Borrows and check books back in.</p>
+        </header>
+
+        <nav class="main-nav" aria-label="Main navigation">
+            <a href="{{ url_for('books') }}">Books</a>
+            <a href="{{ url_for('members') }}">Members</a>
+            <a class="active" href="{{ url_for('Borrows') }}">Borrow / Return</a>
+        </nav>
+
+        {% if status %}
+            <p class="status {{ status[0] }}" role="status">{{ status[1] }}</p>
+        {% endif %}
+
+        {% if database_error %}
+            <section class="notice error" role="alert">
+                <h2>Could not load Borrows</h2>
+                <p>Check that MySQL is running and the books, members, and Borrows tables exist in <code>alone</code>.</p>
+            </section>
+        {% else %}
+            <section class="panel">
+                <h2>Borrow a book</h2>
+                {% if not books %}
+                    <p class="hint">There are no available books to borrow. Add books or process a return first.</p>
+                {% elif not members %}
+                    <p class="hint">Register a member before recording a Borrow.</p>
+                {% else %}
+                    <form class="form-grid" method="post" action="{{ url_for('borrow_book') }}">
+                        <label>Book
+                            <select name="book_id" required>
+                                {% for book in books %}
+                                    <option value="{{ book.book_id }}">{{ book.title }} — {{ book.author }} ({{ book.available_copies }} available)</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <label>Member
+                            <select name="member_id" required>
+                                {% for member in members %}
+                                    <option value="{{ member.member_id }}">{{ member.full_name }} ({{ member.email }})</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                        <label>Due date
+                            <input name="due_date" type="date" min="{{ today.isoformat() }}" required>
+                        </label>
+                        <button type="submit">Record Borrow</button>
+                    </form>
+                {% endif %}
+            </section>
+
+            <section class="panel">
+                <h2>Books currently on Borrow</h2>
+                {% if Borrows %}
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Book</th>
+                                    <th scope="col">Member</th>
+                                    <th scope="col">Borrowed</th>
+                                    <th scope="col">Due</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for Borrow in Borrows %}
+                                    <tr>
+                                        <td class="book-title">{{ Borrow.title }}</td>
+                                        <td>{{ Borrow.full_name }}</td>
+                                        <td>{{ Borrow.borrowed_at }}</td>
+                                        <td>{{ Borrow.due_date }}</td>
+                                        <td>
+                                            <form method="post" action="{{ url_for('return_book', Borrow_id=Borrow.Borrow_id) }}">
+                                                <button class="secondary-button" type="submit">Mark returned</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <section class="notice"><h2>No active Borrows</h2><p>Books that are borrowed will appear here.</p></section>
+                {% endif %}
+            </section>
+        {% endif %}
+    </main>
+</body>
+</html>
